@@ -1,0 +1,17 @@
+{% extends "portal/cms_base.html" %}
+{% block title %}Demandes de rendez-vous — Gestion du site{% endblock %}
+{% block content %}
+<p class="eyebrow">Gestion du site · Rendez-vous</p><h1>Demandes de rendez-vous</h1><p class="intro">Consultez les créneaux proposés par vos clients et actualisez leur statut.</p>
+{% if appointments %}
+  <div class="cms-appointments">
+    {% for appointment in appointments %}
+      <article class="panel cms-appointment">
+        <div><span class="reference">{{ appointment.client.full_name }}</span><h2>{{ appointment.subject }}</h2><p class="subtle">{{ appointment.client.user.email }}{% if appointment.client.phone %} · {{ appointment.client.phone }}{% endif %}</p>{% if appointment.details %}<p>{{ appointment.details|linebreaksbr }}</p>{% endif %}</div>
+        <div class="cms-appointment-side"><span class="pill {% if appointment.status != 'pending' %}closed{% endif %}">{{ appointment.get_status_display }}</span><time>{{ appointment.preferred_at|date:"l d F Y · H:i" }}</time><form method="post" action="{% url 'cms:appointment_update' appointment.pk %}" class="cms-status-form">{% csrf_token %}<select name="status" aria-label="Statut de la demande">{% for value, label in statuses %}<option value="{{ value }}" {% if appointment.status == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select><button class="button secondary" type="submit">Mettre à jour</button></form></div>
+      </article>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="empty"><h3>Aucune demande reçue</h3>Les nouvelles demandes de rendez-vous de l’espace client apparaîtront ici.</div>
+{% endif %}
+{% endblock %}

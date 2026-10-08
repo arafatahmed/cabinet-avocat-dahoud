@@ -1,0 +1,49 @@
+{% extends "portal/cms_base.html" %}
+{% block title %}Gestion du site — Cabinet Dahoud{% endblock %}
+{% block content %}
+<p class="eyebrow">Espace de gestion · Cabinet Dahoud</p>
+<h1>Bonjour, {{ request.user.get_short_name|default:request.user.username }}</h1>
+<p class="intro">Actualisez la vitrine et suivez les demandes de rendez-vous depuis un seul espace.</p>
+
+<section class="hero-card cms-hero">
+  <div class="hero-copy">
+    <p class="eyebrow">Votre site, vos contenus</p>
+    <h2>Une présence claire et à jour, dans les trois langues.</h2>
+    <p>Les modifications publiées dans cet espace apparaissent sur le site du cabinet.</p>
+  </div>
+</section>
+
+<section class="stats" aria-label="Résumé de l'activité">
+  <article class="stat"><span class="stat-label">Clients enregistrés</span><strong class="stat-value">{{ client_count }}</strong><span class="stat-note">Comptes créés par le cabinet</span></article>
+  <article class="stat"><span class="stat-label">Dossiers suivis</span><strong class="stat-value">{{ matter_count }}</strong><span class="stat-note">{{ open_matter_count }} en cours</span></article>
+  <article class="stat"><span class="stat-label">Rendez-vous à confirmer</span><strong class="stat-value">{{ pending_appointments.count }}</strong><span class="stat-note">Demandes en attente de réponse</span></article>
+</section>
+
+<div class="cms-grid">
+  <section>
+    <div class="section-head"><h2>Contenu du site</h2><p>Accès rapide aux rubriques modifiables</p></div>
+    <div class="cms-links">
+      <a class="cms-link-card" href="{% url 'cms:site_settings' %}"><span class="cms-link-icon">⚙</span><span><b>Textes et coordonnées</b><small>Présentation, téléphone, adresse et horaires</small></span><span class="cms-chevron">→</span></a>
+      {% for slug, section in sections.items %}
+        <a class="cms-link-card" href="{% url 'cms:content' slug %}"><span class="cms-link-icon">{% if slug == 'galerie' %}▧{% elif slug == 'equipe' %}◇{% elif slug == 'expertises' %}§{% else %}▤{% endif %}</span><span><b>{{ section.title }}</b><small>{{ section.description }}</small></span><span class="cms-chevron">→</span></a>
+      {% endfor %}
+      <a class="cms-link-card" href="{% url 'cms:appointments' %}"><span class="cms-link-icon">◷</span><span><b>Demandes de rendez-vous</b><small>Confirmer ou refuser une disponibilité proposée</small></span><span class="cms-chevron">→</span></a>
+    </div>
+  </section>
+  <aside>
+    <div class="section-head"><h2>À traiter</h2></div>
+    <section class="panel">
+      {% if pending_appointments %}
+        {% for appointment in pending_appointments %}
+          <div class="deadline"><time>{{ appointment.preferred_at|date:"d/m/Y · H:i" }}</time><b>{{ appointment.client.full_name }} — {{ appointment.subject }}</b><span>{{ appointment.client.user.email }}</span></div>
+        {% endfor %}
+        <a class="link" href="{% url 'cms:appointments' %}">Gérer les demandes →</a>
+      {% else %}
+        <p class="subtle">Aucune demande de rendez-vous en attente.</p>
+      {% endif %}
+    </section>
+    <div class="section-head"><h2>Accès rapide</h2></div>
+    <section class="panel"><p class="subtle">La création des comptes et le suivi des dossiers clients restent accessibles dans l’administration sécurisée.</p><a class="button secondary full" href="{% url 'admin:index' %}">Gestion des dossiers et comptes</a></section>
+  </aside>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "portal/base.html" %}
+{% block title %}Connexion équipe — Gestion du Cabinet Dahoud{% endblock %}
+{% block unauthenticated %}
+<main class="auth-page">
+  <section class="auth-image cms-login-image" aria-label="Architecture de mosquée">
+    <div class="auth-caption"><p class="eyebrow">Cabinet Dahoud · Accès équipe</p><h1>La gestion du site,<br>en toute simplicité.</h1><p>Un espace réservé à l’équipe pour actualiser les informations publiques du cabinet.</p></div>
+  </section>
+  <section class="auth-form-side">
+    <div class="auth-card">
+      <a class="brand" href="{% url 'home' %}"><span class="brand-mark">D</span><span class="brand-name">Cabinet Dahoud<small>GESTION DU SITE</small></span></a>
+      <p class="eyebrow">Espace d’administration</p><h1>Connexion de l’équipe</h1><p>Utilisez le compte professionnel qui vous a été attribué par l’administrateur du cabinet.</p>
+      {% if form.errors %}<div class="alert error" role="alert">Identifiants incorrects ou compte non autorisé à gérer le site.</div>{% endif %}
+      <form class="form-grid" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        <label for="{{ form.username.id_for_label }}">Identifiant de l’équipe
+          <input type="text" name="{{ form.username.html_name }}" id="{{ form.username.id_for_label }}" autocomplete="username" required autofocus>
+        </label>
+        <label for="{{ form.password.id_for_label }}">Mot de passe
+          <input type="password" name="{{ form.password.html_name }}" id="{{ form.password.id_for_label }}" autocomplete="current-password" required>
+        </label>
+        <button class="button full" type="submit">Ouvrir la gestion <span aria-hidden="true">→</span></button>
+      </form>
+      <p class="helper"><a class="link" href="{% url 'login' %}">Accéder à mon espace client</a></p>
+      <div class="auth-footer">Accès réservé au personnel autorisé du Cabinet Dahoud</div>
+    </div>
+  </section>
+</main>
+{% endblock %}

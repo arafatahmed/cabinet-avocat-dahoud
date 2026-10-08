@@ -1,0 +1,84 @@
+{% extends "portal/base.html" %}
+{% block title %}{{ matter.reference }} — Espace client | Cabinet Dahoud{% endblock %}
+{% block content %}
+<a class="back-link" href="{% url 'portal:dashboard' %}">← &nbsp; Retour à mon espace</a>
+<p class="eyebrow">{{ matter.reference }} · {{ matter.get_category_display }}</p>
+<div class="section-head" style="margin-top:0">
+  <div><h1>{{ matter.title }}</h1><p class="intro" style="margin:8px 0 0">{% if matter.court %}{{ matter.court }} · {% endif %}Ouvert le {{ matter.opened_at|date:"d/m/Y" }}</p></div>
+  <span class="pill {% if matter.status == 'waiting' %}waiting{% elif matter.status == 'closed' %}closed{% endif %}">{{ matter.get_status_display }}</span>
+</div>
+
+<div class="columns">
+  <section>
+    <div class="section-head"><h2>Suivi du dossier</h2><p>Informations communiquées par le cabinet</p></div>
+    <div class="panel">
+      {% if matter.summary %}<p class="subtle">{{ matter.summary|linebreaksbr }}</p><hr class="rule">{% endif %}
+      {% if updates %}
+        <ol class="timeline">
+          {% for update in updates %}
+            <li><time>{{ update.created_at|date:"d/m/Y · H:i" }}</time><strong>{{ update.title }}</strong><p>{{ update.body|linebreaksbr }}</p></li>
+          {% endfor %}
+        </ol>
+      {% else %}
+        <p class="subtle">Les prochaines étapes communiquées par le cabinet apparaîtront ici.</p>
+      {% endif %}
+    </div>
+
+    <div class="section-head"><h2>Échanges avec le cabinet</h2></div>
+    <section class="panel">
+      {% if messages_list %}
+        <div class="message-thread">
+          {% for message in messages_list %}
+            <article class="message {% if message.is_from_client %}client{% endif %}">
+              <small>{% if message.is_from_client %}Vous{% else %}Cabinet Dahoud{% endif %} · {{ message.created_at|date:"d/m/Y · H:i" }}</small>
+              <p>{{ message.content }}</p>
+            </article>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="subtle">Aucun échange dans ce dossier pour l'instant.</p>
+      {% endif %}
+      <form class="form-grid" method="post" action="{% url 'portal:send_message' matter.pk %}">
+        {% csrf_token %}
+        {{ message_form.non_field_errors }}
+        <label for="{{ message_form.content.id_for_label }}">{{ message_form.content.label }}{{ message_form.content }}{{ message_form.content.errors }}</label>
+        <button class="button" type="submit">Envoyer au cabinet</button>
+      </form>
+    </section>
+  </section>
+
+  <aside>
+    {% if matter.next_hearing %}
+      <div class="section-head"><h2>Prochaine audience</h2></div>
+      <section class="panel"><div class="deadline"><time>{{ matter.next_hearing|date:"l d F Y · H:i" }}</time><b>{{ matter.court|default:"Audience" }}</b></div></section>
+    {% endif %}
+    <div class="section-head"><h2>Documents du dossier</h2></div>
+    <section class="panel">
+      {% if documents %}
+        <ul class="document-list">
+          {% for document in documents %}
+            <li><span>{{ document.title }}<small>Ajouté le {{ document.uploaded_at|date:"d/m/Y" }}</small></span><a href="{% url 'portal:download_document' document.pk %}" aria-label="Télécharger {{ document.title }}">Télécharger ↓</a></li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="subtle">Les documents transmis par le cabinet apparaîtront ici.</p>
+      {% endif %}
+      <hr class="rule">
+      <h3 class="display" style="font-size:17px">Transmettre une pièce</h3>
+      <p class="subtle">PDF, Word ou image · 10 Mo maximum. Fichiers conservés en accès privé.</p>
+      <form class="form-grid" method="post" enctype="multipart/form-data" action="{% url 'portal:upload_document' matter.pk %}">
+        {% csrf_token %}
+        {{ document_form.non_field_errors }}
+        {% for field in document_form %}
+          <label for="{{ field.id_for_label }}">{{ field.label }}{{ field }}{{ field.errors }}</label>
+        {% endfor %}
+        <button class="button full" type="submit">Déposer le document</button>
+      </form>
+    </section>
+    {% if matter.responsible_lawyer %}
+      <div class="section-head"><h2>Votre interlocuteur</h2></div>
+      <section class="panel"><strong style="font-size:12px">{{ matter.responsible_lawyer }}</strong><p class="subtle" style="margin:5px 0 0">Avocat responsable du dossier</p></section>
+    {% endif %}
+  </aside>
+</div>
+{% endblock %}

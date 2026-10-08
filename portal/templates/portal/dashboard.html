@@ -1,0 +1,81 @@
+{% extends "portal/base.html" %}
+{% block title %}Vue d'ensemble — Espace client | Cabinet Dahoud{% endblock %}
+{% block content %}
+<p class="eyebrow">Votre espace personnel</p>
+<h1>Bonjour {{ profile.full_name|default:request.user.username }}</h1>
+<p class="intro">Retrouvez ici les dernières informations communiquées par le cabinet.</p>
+
+<section class="hero-card">
+  <div class="hero-copy">
+    <p class="eyebrow">Cabinet Dahoud · À vos côtés</p>
+    <h2>Un suivi attentif, à chaque étape de votre dossier.</h2>
+    <p>Consultez vos actualités, transmettez une pièce ou écrivez directement à l'équipe.</p>
+  </div>
+</section>
+
+<section class="stats" aria-label="Résumé de votre espace">
+  <article class="stat"><span class="stat-label">Dossiers en cours</span><strong class="stat-value">{{ active_count }}</strong><span class="stat-note">Suivis par le cabinet</span></article>
+  <article class="stat"><span class="stat-label">Mes dossiers</span><strong class="stat-value">{{ matters|length }}</strong><span class="stat-note">Accès à votre suivi détaillé</span></article>
+  <article class="stat"><span class="stat-label">Prochaine audience</span>{% with hearing=upcoming_hearings|first %}{% if hearing %}<strong class="stat-value" style="font-size:19px">{{ hearing.next_hearing|date:"d M Y" }}</strong><span class="stat-note">{{ hearing.next_hearing|date:"H:i" }} · {{ hearing.reference }}</span>{% else %}<strong class="stat-value" style="font-size:18px">—</strong><span class="stat-note">Aucune audience programmée</span>{% endif %}{% endwith %}</article>
+</section>
+
+<div class="columns">
+  <section>
+    <div class="section-head" id="dossiers"><h2>Mes dossiers</h2><p>Mis à jour par votre avocat</p></div>
+    {% if matters %}
+      <div class="matter-grid">
+        {% for matter in matters %}
+          <article class="matter-card">
+            <div class="matter-top">
+              <span class="reference">{{ matter.reference }}</span>
+              <span class="pill {% if matter.status == 'waiting' %}waiting{% elif matter.status == 'closed' %}closed{% endif %}">{{ matter.get_status_display }}</span>
+            </div>
+            <h3>{{ matter.title }}</h3>
+            <p class="matter-meta">{{ matter.get_category_display }}{% if matter.court %} · {{ matter.court }}{% endif %}</p>
+            <div class="matter-foot">
+              <span>Mis à jour le {{ matter.updated_at|date:"d/m/Y" }}</span>
+              <a class="link" href="{% url 'portal:matter_detail' matter.pk %}">Consulter →</a>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty"><h3>Aucun dossier en ligne pour le moment</h3>Le cabinet ajoutera vos dossiers à cet espace sécurisé.</div>
+    {% endif %}
+
+    <div class="section-head"><h2>Échéances à venir</h2></div>
+    {% if upcoming_hearings %}
+      {% for matter in upcoming_hearings %}
+        <div class="deadline"><time>{{ matter.next_hearing|date:"l d F Y · H:i" }}</time><b>{{ matter.title }}</b><span>{{ matter.reference }}{% if matter.court %} · {{ matter.court }}{% endif %}</span></div>
+      {% endfor %}
+    {% else %}
+      <p class="subtle">Aucune audience à venir n'est enregistrée dans votre espace.</p>
+    {% endif %}
+  </section>
+
+  <aside>
+    <div class="section-head"><h2>Demander un rendez-vous</h2></div>
+    <section class="panel">
+      <p class="subtle">Indiquez vos disponibilités. Le cabinet vous confirmera le rendez-vous.</p>
+      <form class="form-grid" method="post" action="{% url 'portal:request_appointment' %}">
+        {% csrf_token %}
+        {{ appointment_form.non_field_errors }}
+        {% for field in appointment_form %}
+          <label for="{{ field.id_for_label }}">{{ field.label }}{{ field }}{{ field.errors }}</label>
+        {% endfor %}
+        <button class="button full" type="submit">Envoyer ma demande</button>
+      </form>
+    </section>
+    <div class="section-head"><h2>Mes demandes</h2></div>
+    <section class="panel">
+      {% if appointments %}
+        {% for appointment in appointments %}
+          <div class="deadline"><time>{{ appointment.preferred_at|date:"d/m/Y · H:i" }} · {{ appointment.get_status_display }}</time><b>{{ appointment.subject }}</b></div>
+        {% endfor %}
+      {% else %}
+        <p class="subtle">Vos demandes de rendez-vous apparaîtront ici.</p>
+      {% endif %}
+    </section>
+  </aside>
+</div>
+{% endblock %}

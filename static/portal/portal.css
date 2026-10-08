@@ -1,0 +1,227 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap");
+
+:root {
+  color-scheme: light;
+  --ink: #211f20;
+  --muted: #79736f;
+  --paper: #f6f4f0;
+  --white: #fff;
+  --line: #e9e4dc;
+  --gold: #c5a15b;
+  --gold-light: #f2e9d7;
+  --green: #467562;
+  --red: #9d554e;
+  --navy: #211f20;
+  --shadow: 0 24px 70px rgb(32 28 24 / 8%);
+  font-family: "DM Sans", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+body { min-width: 0; margin: 0; color: var(--ink); background: var(--paper); }
+a { color: inherit; }
+button, input, textarea, select { font: inherit; }
+button, .button { cursor: pointer; }
+
+.layout { min-height: 100vh; display: grid; grid-template-columns: 260px minmax(0, 1fr); }
+.sidebar { display: flex; flex-direction: column; gap: 44px; padding: 30px 20px 24px; color: #f8f5ef; background: var(--navy); }
+.brand { display: flex; align-items: center; gap: 13px; color: inherit; text-decoration: none; }
+.brand-mark { display: grid; width: 44px; height: 44px; place-items: center; border: 1px solid var(--gold); color: var(--gold); font: 600 20px "Playfair Display", Georgia, serif; }
+.brand-name { display: grid; gap: 3px; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.brand-name small { color: #c6bfb7; font-size: 10px; font-weight: 400; letter-spacing: .17em; }
+.nav-label { margin: 0 0 13px 12px; color: #9c948c; font-size: 10px; font-weight: 600; letter-spacing: .17em; text-transform: uppercase; }
+.side-nav { display: grid; gap: 6px; }
+.side-nav a { display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 4px; color: #d1cbc4; font-size: 13px; text-decoration: none; transition: background .2s, color .2s; }
+.side-nav a:hover, .side-nav a.active { color: #fff; background: rgb(255 255 255 / 8%); }
+.side-nav a.active { box-shadow: inset 2px 0 var(--gold); }
+.side-nav .nav-icon { width: 17px; color: var(--gold); text-align: center; }
+.sidebar-bottom { margin-top: auto; }
+.confidential { padding: 14px; border: 1px solid rgb(255 255 255 / 12%); color: #c6bfb7; font-size: 11px; line-height: 1.6; }
+.confidential b { display: block; margin-bottom: 4px; color: #f5f0e8; font-weight: 600; }
+.signout { width: 100%; margin-top: 14px; padding: 10px; border: 0; color: #d1cbc4; background: transparent; text-align: left; font-size: 12px; }
+.signout:hover { color: #fff; }
+
+.main { min-width: 0; }
+.topbar { display: flex; min-height: 76px; align-items: center; justify-content: space-between; padding: 14px clamp(20px, 4vw, 58px); border-bottom: 1px solid var(--line); background: rgb(255 255 255 / 82%); }
+.breadcrumb { color: var(--muted); font-size: 12px; }
+.user-chip { display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 600; }
+.avatar { display: grid; width: 35px; height: 35px; place-items: center; border-radius: 50%; color: #715a31; background: var(--gold-light); font-size: 12px; }
+.content { width: min(1280px, 100%); margin: 0 auto; padding: clamp(25px, 4vw, 52px); }
+.eyebrow { margin: 0 0 9px; color: #94743b; font-size: 10px; font-weight: 700; letter-spacing: .19em; text-transform: uppercase; }
+h1, h2, h3, p { margin-top: 0; }
+h1, .display { font-family: "Playfair Display", Georgia, serif; font-weight: 500; letter-spacing: -.025em; }
+h1 { margin-bottom: 10px; font-size: clamp(31px, 3.4vw, 46px); line-height: 1.15; }
+h2 { font-family: "Playfair Display", Georgia, serif; font-size: 22px; font-weight: 500; }
+.intro { margin-bottom: 30px; color: var(--muted); font-size: 14px; }
+.hero-card { position: relative; overflow: hidden; min-height: 210px; margin-bottom: 28px; padding: clamp(24px, 4vw, 40px); color: white; background: #282321 url("/static/images/mosque-sheikh-zayed.jpg") center 48% / cover; }
+.hero-card::before { position: absolute; inset: 0; background: linear-gradient(90deg, rgb(25 22 21 / 89%), rgb(25 22 21 / 45%) 70%, rgb(25 22 21 / 10%)); content: ""; }
+.hero-copy { position: relative; max-width: 550px; }
+.hero-card .eyebrow { color: #e2c684; }
+.hero-card h2 { max-width: 470px; margin-bottom: 10px; font-size: clamp(23px, 2.5vw, 30px); }
+.hero-card p:last-child { margin-bottom: 0; color: #e8e2d9; font-size: 13px; }
+
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-bottom: 36px; }
+.stat { padding: 20px; border: 1px solid var(--line); background: var(--white); }
+.stat-label { display: block; margin-bottom: 12px; color: var(--muted); font-size: 11px; }
+.stat-value { font: 500 30px "Playfair Display", Georgia, serif; }
+.stat-note { display: block; margin-top: 5px; color: #a09a92; font-size: 10px; }
+.section-head { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin: 36px 0 16px; }
+.section-head h2 { margin: 0; }
+.section-head p { margin: 0; color: var(--muted); font-size: 11px; }
+.matter-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.matter-card, .panel { min-width: 0; padding: 22px; border: 1px solid var(--line); background: var(--white); }
+.matter-top { display: flex; justify-content: space-between; gap: 14px; }
+.reference { color: #9a7940; font-size: 10px; font-weight: 700; letter-spacing: .1em; }
+.matter-card h3 { margin: 10px 0 6px; font: 500 19px "Playfair Display", Georgia, serif; }
+.matter-meta { color: var(--muted); font-size: 11px; }
+.matter-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 9px; border-radius: 30px; color: #476855; background: #e9f1ec; font-size: 10px; font-weight: 600; white-space: nowrap; }
+.pill.waiting { color: #886b38; background: #f6efdf; }
+.pill.closed { color: #756f69; background: #efeeeb; }
+.link { color: #755a2b; font-size: 11px; font-weight: 600; text-decoration: none; }
+.link:hover { text-decoration: underline; }
+.columns { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(260px, .8fr); gap: 20px; align-items: start; }
+.timeline { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+.timeline li { position: relative; padding: 0 0 22px 22px; border-left: 1px solid var(--line); }
+.timeline li::before { position: absolute; top: 3px; left: -4px; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); content: ""; }
+.timeline time { display: block; margin-bottom: 4px; color: var(--muted); font-size: 10px; }
+.timeline strong { font-size: 12px; }
+.timeline p { margin: 5px 0 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+.deadline { margin-bottom: 10px; padding: 13px 14px; border-left: 2px solid var(--gold); background: var(--paper); }
+.deadline time { display: block; margin-bottom: 4px; color: #987940; font-size: 10px; font-weight: 700; }
+.deadline b { display: block; font-size: 12px; }
+.deadline span { color: var(--muted); font-size: 10px; }
+.document-list { display: grid; gap: 9px; margin: 0; padding: 0; list-style: none; }
+.document-list li { display: flex; justify-content: space-between; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--line); }
+.document-list li:last-child { border-bottom: 0; }
+.document-list a { color: #624d2a; font-size: 11px; text-decoration: none; }
+.document-list small { display: block; margin-top: 3px; color: var(--muted); font-size: 9px; }
+.message-thread { display: grid; gap: 12px; margin-bottom: 24px; }
+.message { width: fit-content; max-width: 85%; padding: 14px 16px; background: var(--paper); }
+.message.client { justify-self: end; background: #f2ead9; }
+.message small { display: block; margin-bottom: 6px; color: #8c7959; font-size: 9px; }
+.message p { margin: 0; font-size: 12px; line-height: 1.6; white-space: pre-wrap; }
+.form-grid { display: grid; gap: 13px; }
+.form-grid label { display: grid; gap: 6px; color: #57514b; font-size: 11px; font-weight: 600; }
+.form-grid input, .form-grid textarea, .form-grid select { width: 100%; padding: 11px 12px; border: 1px solid var(--line); border-radius: 2px; outline: 0; color: var(--ink); background: #fff; font-size: 12px; }
+.form-grid input:focus, .form-grid textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgb(197 161 91 / 13%); }
+.form-grid input[type=file] { padding: 9px; }
+.button { display: inline-flex; min-height: 40px; align-items: center; justify-content: center; padding: 10px 16px; border: 1px solid var(--gold); color: #252120; background: var(--gold); font-size: 11px; font-weight: 700; text-decoration: none; transition: filter .2s; }
+.button:hover { filter: brightness(1.06); }
+.button.secondary { border-color: var(--line); background: white; }
+.button.full { width: 100%; }
+.empty { padding: 32px; border: 1px dashed #d9d1c4; color: var(--muted); background: rgb(255 255 255 / 55%); text-align: center; font-size: 12px; }
+.empty h3 { margin-bottom: 7px; color: var(--ink); font: 500 19px "Playfair Display", Georgia, serif; }
+.alerts { display: grid; gap: 8px; margin-bottom: 18px; }
+.alert { padding: 12px 15px; border-left: 2px solid var(--green); color: #375b4a; background: #eaf1ec; font-size: 12px; }
+.alert.error { border-color: var(--red); color: #82443e; background: #f6eae8; }
+.back-link { display: inline-block; margin-bottom: 21px; color: #755a2b; font-size: 11px; text-decoration: none; }
+.back-link:hover { text-decoration: underline; }
+.subtle { color: var(--muted); font-size: 11px; line-height: 1.65; }
+.rule { height: 1px; margin: 20px 0; border: 0; background: var(--line); }
+
+.auth-page { min-height: 100vh; display: grid; grid-template-columns: minmax(320px, 1.08fr) minmax(420px, .92fr); background: white; }
+.auth-image { position: relative; display: flex; min-height: 100vh; align-items: end; padding: clamp(30px, 6vw, 80px); color: white; background: #292321 url("/static/images/mosque-aerial.jpg") center / cover; }
+.auth-image::before { position: absolute; inset: 0; background: linear-gradient(0deg, rgb(25 22 21 / 83%), rgb(25 22 21 / 9%) 90%); content: ""; }
+.auth-caption { position: relative; max-width: 510px; }
+.auth-caption h1 { font-size: clamp(36px, 4vw, 55px); }
+.auth-caption p { max-width: 420px; color: #e2dcd3; font-size: 13px; line-height: 1.8; }
+.auth-form-side { display: grid; align-content: center; justify-items: center; padding: 35px; }
+.auth-card { width: min(410px, 100%); }
+.auth-card .brand { margin-bottom: 54px; color: var(--ink); }
+.auth-card h1 { margin-bottom: 9px; font-size: 34px; }
+.auth-card > p { margin-bottom: 30px; color: var(--muted); font-size: 12px; line-height: 1.7; }
+.auth-card .form-grid { gap: 16px; }
+.auth-card .form-grid input { padding: 13px; }
+.auth-footer { margin-top: 25px; color: #958d85; font-size: 10px; text-align: center; }
+.errorlist { margin: 4px 0 0; padding-left: 16px; color: #984a43; font-size: 10px; }
+.helper { margin-top: 15px; color: var(--muted); font-size: 10px; line-height: 1.7; }
+
+.cms-sidebar { gap: 38px; }
+.cms-sidebar .brand-mark { border-color: #d1b474; }
+.cms-layout .content { max-width: 1440px; }
+.cms-hero { background-image: url("/static/images/mosque-aerial.jpg"); }
+.cms-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(270px, .8fr); gap: 22px; align-items: start; }
+.cms-links { display: grid; gap: 10px; }
+.cms-link-card { display: grid; grid-template-columns: 38px minmax(0, 1fr) 20px; align-items: center; gap: 14px; padding: 18px; border: 1px solid var(--line); background: var(--white); text-decoration: none; transition: border-color .2s, transform .2s; }
+.cms-link-card:hover { transform: translateY(-1px); border-color: var(--gold); }
+.cms-link-icon { display: grid; width: 36px; height: 36px; place-items: center; color: #8c6d34; background: var(--gold-light); }
+.cms-link-card b, .cms-link-card small { display: block; }
+.cms-link-card b { margin-bottom: 5px; font: 500 16px "Playfair Display", Georgia, serif; }
+.cms-link-card small { color: var(--muted); font-size: 10px; line-height: 1.5; }
+.cms-chevron { color: #a18755; }
+.cms-form { display: grid; gap: 16px; }
+.cms-form-head { align-items: center; margin-top: 0; }
+.cms-form-head h2 { margin: 0; }
+.cms-form-head .eyebrow { margin-bottom: 5px; }
+.cms-language { margin-top: 16px; }
+.cms-field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.cms-two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.cms-field { min-width: 0; display: grid; align-content: start; gap: 7px; color: #57514b; font-size: 11px; font-weight: 600; }
+.cms-field-wide { grid-column: 1 / -1; }
+.cms-field input, .cms-field textarea, .cms-field select { width: 100%; min-width: 0; padding: 10px 11px; border: 1px solid var(--line); border-radius: 2px; outline: 0; color: var(--ink); background: #fff; font-size: 12px; font-weight: 400; }
+.cms-field input:focus, .cms-field textarea:focus, .cms-field select:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgb(197 161 91 / 13%); }
+.cms-field textarea { resize: vertical; }
+.cms-field small { color: var(--muted); font-size: 9px; font-weight: 400; }
+.cms-field .errorlist { padding-left: 15px; }
+.cms-actions { display: flex; justify-content: flex-end; gap: 10px; }
+.cms-form-grid { gap: 12px; }
+.cms-editor { padding: 18px; }
+.cms-editor-grid { grid-template-columns: minmax(0, 1.4fr) minmax(285px, .8fr); }
+.cms-list { display: grid; gap: 9px; }
+.cms-row { display: flex; min-width: 0; justify-content: space-between; align-items: center; gap: 14px; padding: 15px; border: 1px solid var(--line); background: white; }
+.cms-row-copy { display: grid; min-width: 0; gap: 4px; }
+.cms-row-copy b { font-size: 12px; }
+.cms-row-copy small { color: var(--muted); font-size: 10px; }
+.cms-row-actions { display: flex; align-items: center; gap: 9px; }
+.cms-row-actions .button { min-height: 32px; padding: 7px 10px; font-size: 10px; }
+.cms-thumb { width: 88px; height: 58px; margin-bottom: 5px; object-fit: cover; }
+.cms-delete-form { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+.cms-delete { padding: 7px 0; border: 0; color: #934c43; background: transparent; font-size: 11px; }
+.cms-delete:hover { text-decoration: underline; }
+.cms-note { margin-top: 14px; color: #5e5140; background: #f8f3e8; font-size: 11px; line-height: 1.6; }
+.cms-note p { margin: 7px 0 0; color: var(--muted); }
+.cms-appointments { display: grid; gap: 12px; }
+.cms-appointment { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 20px; }
+.cms-appointment h2 { margin: 7px 0 4px; font-size: 20px; }
+.cms-appointment p { margin-bottom: 8px; font-size: 11px; }
+.cms-appointment-side { display: grid; justify-items: end; align-content: start; gap: 10px; }
+.cms-appointment-side time { color: #876a37; font-size: 11px; }
+.cms-status-form { display: flex; gap: 7px; }
+.cms-status-form select { max-width: 130px; padding: 8px; border: 1px solid var(--line); background: white; font-size: 10px; }
+.cms-status-form .button { min-height: 32px; padding: 7px 9px; font-size: 10px; }
+.cms-login-image { background-image: url("/static/images/mosque-sheikh-zayed.jpg"); }
+
+@media (max-width: 1020px) {
+  .layout { grid-template-columns: 220px minmax(0, 1fr); }
+  .sidebar { padding-inline: 15px; }
+  .matter-grid { grid-template-columns: 1fr; }
+  .columns { grid-template-columns: 1fr; }
+  .cms-grid, .cms-editor-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+  .layout { display: block; }
+  .sidebar { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 0; padding: 12px 17px; }
+  .sidebar > .nav-label, .sidebar-bottom { display: none; }
+  .side-nav { display: flex; justify-content: end; gap: 2px; }
+  .side-nav a { padding: 9px; font-size: 0; }
+  .side-nav .nav-icon { font-size: 15px; }
+  .topbar { min-height: 58px; padding: 10px 18px; }
+  .content { padding: 26px 18px 40px; }
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat:last-child { grid-column: 1 / -1; }
+  .hero-card { min-height: 185px; }
+  .section-head { align-items: start; flex-direction: column; }
+  .auth-page { grid-template-columns: 1fr; }
+  .auth-image { display: none; }
+  .auth-form-side { min-height: 100vh; padding: 26px; }
+  .auth-card .brand { margin-bottom: 40px; }
+  .cms-field-grid, .cms-two { grid-template-columns: 1fr; }
+  .cms-field-wide { grid-column: auto; }
+  .cms-appointment { grid-template-columns: 1fr; }
+  .cms-appointment-side { justify-items: start; }
+  .cms-status-form { flex-wrap: wrap; }
+}
+@media (max-width: 400px) {
+  .sidebar { grid-template-columns: 1fr; }
+  .side-nav { justify-content: start; margin-top: 10px; }
+}

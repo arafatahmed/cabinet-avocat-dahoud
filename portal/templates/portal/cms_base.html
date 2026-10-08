@@ -1,0 +1,48 @@
+{% load static %}
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1c1a19">
+  <title>{% block title %}Gestion du site — Cabinet Dahoud{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'portal/portal.css' %}">
+</head>
+<body>
+<div class="layout cms-layout">
+  <aside class="sidebar cms-sidebar">
+    <a class="brand" href="{% url 'cms:dashboard' %}">
+      <span class="brand-mark">D</span>
+      <span class="brand-name">Cabinet Dahoud<small>GESTION DU SITE</small></span>
+    </a>
+    <div>
+      <p class="nav-label">Administration</p>
+      <nav class="side-nav" aria-label="Navigation de gestion">
+        <a class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'cms:dashboard' %}"><span class="nav-icon" aria-hidden="true">⌂</span>Vue d’ensemble</a>
+        <a class="{% if request.resolver_match.url_name == 'site_settings' %}active{% endif %}" href="{% url 'cms:site_settings' %}"><span class="nav-icon" aria-hidden="true">⚙</span>Contenu et coordonnées</a>
+        <a class="{% if request.resolver_match.kwargs.section == 'expertises' %}active{% endif %}" href="{% url 'cms:content' 'expertises' %}"><span class="nav-icon" aria-hidden="true">§</span>Domaines d’expertise</a>
+        <a class="{% if request.resolver_match.kwargs.section == 'equipe' %}active{% endif %}" href="{% url 'cms:content' 'equipe' %}"><span class="nav-icon" aria-hidden="true">◇</span>Équipe</a>
+        <a class="{% if request.resolver_match.kwargs.section == 'galerie' %}active{% endif %}" href="{% url 'cms:content' 'galerie' %}"><span class="nav-icon" aria-hidden="true">▧</span>Photographies</a>
+        <a class="{% if request.resolver_match.kwargs.section == 'publications' %}active{% endif %}" href="{% url 'cms:content' 'publications' %}"><span class="nav-icon" aria-hidden="true">▤</span>Publications</a>
+        <a class="{% if request.resolver_match.url_name == 'appointments' %}active{% endif %}" href="{% url 'cms:appointments' %}"><span class="nav-icon" aria-hidden="true">◷</span>Rendez-vous</a>
+        <a href="{% url 'home' %}" target="_blank" rel="noopener"><span class="nav-icon" aria-hidden="true">↗</span>Voir le site public</a>
+      </nav>
+    </div>
+    <div class="sidebar-bottom">
+      <div class="confidential"><b>Espace réservé au cabinet</b>Les changements validés sont publiés directement sur le site public.</div>
+      <form method="post" action="{% url 'cms:logout' %}">{% csrf_token %}<button class="signout" type="submit">↪ &nbsp; Se déconnecter</button></form>
+    </div>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <span class="breadcrumb">Cabinet Dahoud <span aria-hidden="true">/</span> Gestion du site</span>
+      <div class="user-chip"><span class="avatar">{{ request.user.get_full_name|default:request.user.username|slice:":1"|upper }}</span>{{ request.user.get_full_name|default:request.user.username }}</div>
+    </header>
+    <main class="content">
+      {% if messages %}<div class="alerts" role="status">{% for message in messages %}<div class="alert {% if message.tags == 'error' %}error{% endif %}">{{ message }}</div>{% endfor %}</div>{% endif %}
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+{% extends "portal/cms_base.html" %}
+{% block title %}{{ config.title }} — Gestion du site{% endblock %}
+{% block content %}
+<p class="eyebrow">Gestion du site · Contenus</p>
+<h1>{{ config.title }}</h1>
+<p class="intro">{{ config.description }}</p>
+
+<div class="cms-grid cms-editor-grid">
+  <section>
+    <div class="section-head"><h2>Éléments publiés et brouillons</h2><a class="button" href="{% url 'cms:content' section %}">+ Ajouter</a></div>
+    {% if items %}
+      <div class="cms-list">
+        {% for content in items %}
+          <article class="cms-row">
+            <div class="cms-row-copy">
+              {% if section == 'expertises' %}<b>{{ content.title_fr }}</b><small>{{ content.description_fr|truncatewords:18 }}</small>
+              {% elif section == 'galerie' %}<img class="cms-thumb" src="{{ content.image_url }}" alt=""><b>{{ content.caption_fr }}</b><small>{{ content.image_url|truncatechars:55 }}</small>
+              {% elif section == 'equipe' %}<b>{{ content.name_fr }}</b><small>{{ content.title_fr }}</small>
+              {% else %}<b>{{ content.title_fr }}</b><small>{{ content.category_fr }} · {{ content.excerpt_fr|truncatewords:12 }}</small>{% endif %}
+            </div>
+            <div class="cms-row-actions">
+              {% if content.is_active %}<span class="pill">Publié</span>{% else %}<span class="pill closed">Masqué</span>{% endif %}
+              <a class="button secondary" href="{% url 'cms:content_edit' section content.pk %}">Modifier</a>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty"><h3>Aucun contenu pour le moment</h3>Ajoutez un premier élément : il apparaîtra sur le site public dès sa publication.</div>
+    {% endif %}
+  </section>
+  <aside>
+    <section class="panel cms-editor">
+      <div class="section-head cms-form-head"><div><p class="eyebrow">{% if is_editing %}Modification{% else %}Nouvel élément{% endif %}</p><h2>{% if is_editing %}Modifier le contenu{% else %}Ajouter au site{% endif %}</h2></div></div>
+      <form class="form-grid cms-form-grid" method="post">
+        {% csrf_token %}
+        {% if form.non_field_errors %}<div class="alert error">{{ form.non_field_errors }}</div>{% endif %}
+        {% for field in form %}
+          <label class="cms-field" for="{{ field.id_for_label }}"><span>{{ field.label }}</span>{{ field }}{% if field.errors %}{{ field.errors }}{% endif %}{% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}</label>
+        {% endfor %}
+        <div class="cms-actions"><button class="button full" type="submit">Enregistrer</button></div>
+      </form>
+      {% if is_editing %}
+        <form method="post" class="cms-delete-form" onsubmit="return confirm('Supprimer cet élément ? Cette action est définitive.');">
+          {% csrf_token %}<input type="hidden" name="action" value="delete">
+          <button class="cms-delete" type="submit">Supprimer cet élément</button>
+        </form>
+      {% endif %}
+    </section>
+    {% if section == 'galerie' %}<section class="panel cms-note"><b>Recommandations photo</b><p>Privilégiez des photos d’architecture, de mosquées, de motifs géométriques ou de livres juridiques, sans personnes. Utilisez des liens HTTPS directs vers les images.</p></section>{% endif %}
+    {% if section == 'equipe' %}<section class="panel cms-note"><b>Confidentialité des portraits</b><p>Le portrait est facultatif. En l’absence d’image, le site utilise le monogramme graphique du cabinet.</p></section>{% endif %}
+  </aside>
+</div>
+{% endblock %}

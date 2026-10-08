@@ -1,0 +1,37 @@
+{% extends "portal/base.html" %}
+{% block title %}Connexion — Espace client | Cabinet Dahoud{% endblock %}
+{% block unauthenticated %}
+<main class="auth-page">
+  <section class="auth-image" aria-label="Bibliothèque juridique">
+    <div class="auth-caption">
+      <p class="eyebrow">Cabinet Dahoud · Nouakchott</p>
+      <h1>Votre dossier,<br>en toute clarté.</h1>
+      <p>Retrouvez les informations utiles à votre dossier et échangez en toute confidentialité avec le cabinet.</p>
+    </div>
+  </section>
+  <section class="auth-form-side">
+    <div class="auth-card">
+      <a class="brand" href="{% url 'home' %}"><span class="brand-mark">D</span><span class="brand-name">Cabinet Dahoud<small>AVOCATS & CONSEILS</small></span></a>
+      <p class="eyebrow">Espace client sécurisé</p>
+      <h1>Bienvenue</h1>
+      <p>Connectez-vous pour consulter vos dossiers, vos documents et les échanges avec le cabinet.</p>
+      {% if form.errors %}<div class="alert error" role="alert">Identifiant ou mot de passe incorrect.</div>{% endif %}
+      {% if next and request.user.is_authenticated %}<div class="alert error" role="alert">Votre compte n'a pas accès à cette page.</div>{% endif %}
+      <form class="form-grid" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        <label for="{{ form.username.id_for_label }}">Identifiant
+          <input type="text" name="{{ form.username.html_name }}" id="{{ form.username.id_for_label }}" autocomplete="username" required autofocus>
+        </label>
+        <label for="{{ form.password.id_for_label }}">Mot de passe
+          <input type="password" name="{{ form.password.html_name }}" id="{{ form.password.id_for_label }}" autocomplete="current-password" required>
+        </label>
+        <button class="button full" type="submit">Accéder à mon espace <span aria-hidden="true">→</span></button>
+      </form>
+      <p class="helper"><a class="link" href="{% url 'password_reset' %}">Mot de passe oublié ?</a></p>
+      <p class="helper">Votre accès est créé par le cabinet. Pour obtenir un compte, contactez votre avocat.</p>
+      <div class="auth-footer">Confidentialité protégée · Cabinet Dahoud, Nouakchott</div>
+    </div>
+  </section>
+</main>
+{% endblock %}
