@@ -48,6 +48,8 @@ Dans Django Admin, créez d'abord un utilisateur actif avec une adresse e-mail r
 
 Les réinitialisations de mot de passe utilisent SMTP si `EMAIL_HOST` est renseigné. Avant la mise en production, configurez un vrai serveur SMTP, une `SECRET_KEY` aléatoire, les hôtes autorisés, HTTPS et `DEBUG=False`. Gardez `private_uploads/` hors de toute configuration de fichiers statiques/publics et sauvegardez les données conformément aux obligations de confidentialité du cabinet.
 
+Pour lancer le site derrière Gunicorn, installez les dépendances de `requirements.txt` et exécutez `python manage.py collectstatic --noinput` avant de démarrer Gunicorn. WhiteNoise sert les fichiers statiques collectés ; les documents des clients restent privés et ne sont pas servis par WhiteNoise. Configurez le serveur applicatif en HTTPS et définissez `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS` et `SECRET_KEY` pour l’adresse utilisée.
+
 ## Vérifications
 
 ```powershell
